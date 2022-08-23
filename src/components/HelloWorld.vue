@@ -7,7 +7,7 @@
         name="name"
         id="name"
         placeholder="John Smith"
-        v-model="user"
+        
       />
     </div>
     <div class="second">
@@ -17,21 +17,62 @@
         name="email"
         id="email"
         placeholder="john.smith@gmail.com"
-        v-model="email"
+        
       />
     </div>
   </form>
+  <div class="list">
+    <div>
+      <button @click="score(8)">Score</button>
+    <h2>Users: {{numUsers}}</h2>
+    <div v-for="name in namesArray" :key="name">
+      <li style="list-style: none">{{name}}</li>
+      <button @click="()=> log(name)">Logout</button>
+    </div>
+    </div>
+    <div>
+        <h2>Online: {{onlineUsers}}</h2>
+      <div v-for="name in onlineArray" :key="name">
+        <li style="list-style: none">{{name}}</li>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      user: this.$store.state.users[0].name,
-      email: this.$store.state.users[0].email,
+      //user: this.$store.state.users[0].name,
+      //email: this.$store.state.users[0].email,
+      numUsers: this.$store.getters.getNames.length,
+      namesArray: this.$store.getters.getNames,
     };
   },
-  created() {},
+  computed: {
+    ...mapGetters({
+      onlineArray: 'getOnlineUsers',
+      onlineUsers: 'numOnlineUsers',
+    })
+  },
+  methods: {
+    login(name) {
+      this.$store.commit('login', {name});
+      
+    },
+    log(name) {
+      this.$store.commit('logout', {name});
+    },
+    score(amount) {
+      this.$store.commit('increment', {amount})
+    }
+  },
+  updated() {
+    console.log(this.$store.state.users)
+    
+
+  },
 };
 </script>
 
@@ -63,5 +104,12 @@ input::placeholder {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.list {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
 }
 </style>
