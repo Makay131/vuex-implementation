@@ -23,22 +23,24 @@
   </form>
   <div class="list">
     <div>
+      <!-- SCORE for mutation only change-- ADD for dispatching action -->
       <button @click="score(8)">Score</button>
       <button @click="() => add(4)">Add</button>
     
-    <h2>Users: {{numUsers}}</h2>
-    <p>{{ scoreMax }}</p>
+      <h2>Users: {{numUsers}}</h2>
+      <p>{{ scoreMax }}</p>
     
-    <div v-for="name in namesArray" :key="name">
-      <li style="list-style: none">{{name}}</li>
-      <button @click="()=> log(name)">Logout</button>
+      <div v-for="name in namesArray" :key="name">
+        <li style="list-style: none">{{name}}</li>
+        <button @click="()=> log(name)">Logout</button>
+      </div>
     </div>
-    </div>
+
     <div>
         <h2>Online: {{onlineUsers}}</h2>
-      <div v-for="name in onlineArray" :key="name">
-        <li style="list-style: none">{{name}}</li>
-      </div>
+        <div v-for="name in onlineArray" :key="name">
+          <li style="list-style: none">{{name}}</li>
+        </div>
     </div>
   </div>
 </template>
@@ -83,7 +85,6 @@ export default {
     
   },
   async mounted() {
-      console.log('step 1')
       await this.$store.dispatch('getLanguages', { key: 'a'})
     }
 };
