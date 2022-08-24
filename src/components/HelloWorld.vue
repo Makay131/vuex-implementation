@@ -24,7 +24,11 @@
   <div class="list">
     <div>
       <button @click="score(8)">Score</button>
+      <button @click="() => add(4)">Add</button>
+    
     <h2>Users: {{numUsers}}</h2>
+    <p>{{ scoreMax }}</p>
+    
     <div v-for="name in namesArray" :key="name">
       <li style="list-style: none">{{name}}</li>
       <button @click="()=> log(name)">Logout</button>
@@ -40,6 +44,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
 export default {
   data() {
@@ -48,6 +53,7 @@ export default {
       //email: this.$store.state.users[0].email,
       numUsers: this.$store.getters.getNames.length,
       namesArray: this.$store.getters.getNames,
+      scoreMax: this.$store.state.users[0].score
     };
   },
   computed: {
@@ -66,13 +72,20 @@ export default {
     },
     score(amount) {
       this.$store.commit('increment', {amount})
-    }
-  },
-  updated() {
-    console.log(this.$store.state.users)
+    },
+    ...mapActions([
+      'incrementAct'
+      ]
+    ),
+    add(payload) {
+      this.$store.dispatch('incrementAct', payload);
+    },
     
-
   },
+  async mounted() {
+      console.log('step 1')
+      await this.$store.dispatch('getLanguages', { key: 'a'})
+    }
 };
 </script>
 

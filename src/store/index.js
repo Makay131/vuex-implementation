@@ -1,9 +1,10 @@
 import { createStore } from "vuex";
+import languages from './modules/languages'
 
 const store = createStore({
   state: {
     users: [
-      { name: "Mahmut Akay", email: "mahmut@gmail.com", active: true, score: 0 },
+      { name: "Mahmut Akay", email: "mahmut@gmail.com", active: true, score: 0, },
       { name: "Emrullah Tastan", email: "emrullah@gmail.com", active: false, score: 0 },
       { name: "John Smith", email: "john@gmail.com", active: true, score: 0 },
       { name: "Mary Boore", email: "mary@gmail.com", active: true, score: 0 },
@@ -20,6 +21,9 @@ const store = createStore({
     },
     numOnlineUsers(state, getters) {
       return getters.getOnlineUsers.length;
+    },
+    showData(){
+      console.log(languages);
     }
   },
   mutations: {
@@ -33,10 +37,20 @@ const store = createStore({
     },
     increment(state, payload) {
       state.users.forEach(u=> u.score += payload.amount)
+    },
+    add(state, payload) {
+      state.users.map(u => u.score += payload)
     }
   },
-  actions: {},
-  modules: {},
+  actions: {
+    incrementAct(context, payload){
+      setTimeout(() => {
+        context.commit('add', payload);
+      }, 2000);
+      
+    }
+  },
+  modules: { languages },
 });
 
 export default store;
